@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Install S-RAMP and S-RAMP-UI" default="install">
 
-  <property name="s-ramp.version" value="0.1.2-SNAPSHOT" />
-  <property name="s-ramp-ui.version" value="0.2.0-SNAPSHOT" />
+  <property file="build.properties" />
+
+  <property name="s-ramp.version" value="0.1.1" />
+  <property name="s-ramp-ui.version" value="0.1.1" />
   <property name="resteasy.version" value="2.3.5.Final" />
   <property name="modeshape.version" value="3.1.3.Final" />
 
@@ -10,8 +12,8 @@
   <property name="resteasy.download.url" value="http://sourceforge.net/projects/resteasy/files/Resteasy%20JAX-RS/${resteasy.version}/resteasy-jaxrs-${resteasy.version}-all.zip/download" />
   <property name="modeshape.download.url" value="http://downloads.jboss.org/modeshape/${modeshape.version}/modeshape-${modeshape.version}-jbossas-71-dist.zip" />
 
-  <property name="s-ramp.download.url" value="file:///C:/Users/Eric/.m2/repository/org/overlord/sramp/s-ramp-server/${s-ramp.version}/s-ramp-server-${s-ramp.version}.war" />
-  <property name="s-ramp-ui.download.url" value="file:///C:/Users/Eric/.m2/repository/org/overlord/sramp/s-ramp-ui-war-jboss7/${s-ramp-ui.version}/s-ramp-ui-war-jboss7-${s-ramp-ui.version}.war" />
+  <property name="s-ramp.download.url" value="https://repository.jboss.org/nexus/content/groups/public/org/overlord/sramp/s-ramp-server/${s-ramp.version}/s-ramp-server-${s-ramp.version}.war" />
+  <property name="s-ramp-ui.download.url" value="https://repository.jboss.org/nexus/content/groups/public/org/overlord/sramp/s-ramp-ui-gwt/${s-ramp-ui.version}/s-ramp-ui-gwt-${s-ramp-ui.version}.war" />
 
   <property name="installdir" value="${basedir}/target" />
   <property name="jboss.as.dist.dir" value="${installdir}/jboss-as-7.1.1.Final" />
