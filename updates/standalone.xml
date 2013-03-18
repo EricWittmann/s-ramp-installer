@@ -299,6 +299,30 @@
                         </login-module>
                     </authentication>
                 </security-domain>
+                <security-domain name="overlord-idp" cache-type="default">
+                    <authentication>
+                        <login-module code="UsersRoles" flag="required">
+                            <module-option name="usersProperties" value="${jboss.server.config.dir}/overlord-idp-users.properties"/>
+                            <module-option name="rolesProperties" value="${jboss.server.config.dir}/overlord-idp-roles.properties"/>
+                        </login-module>
+                    </authentication>
+                </security-domain>
+                <security-domain name="overlord-sp" cache-type="default">
+                    <authentication>
+                        <login-module code="org.picketlink.identity.federation.bindings.jboss.auth.SAML2LoginModule" flag="required"/>
+                    </authentication>
+                </security-domain>
+                <security-domain name="overlord-jaxrs" cache-type="default">
+                    <authentication>
+                        <login-module code="org.overlord.commons.auth.jboss7.SAMLBearerTokenLoginModule" flag="sufficient">
+                            <module-option name="expectedIssuer" value="/s-ramp-ui"/>
+                        </login-module>
+                        <login-module code="UsersRoles" flag="sufficient">
+                            <module-option name="usersProperties" value="${jboss.server.config.dir}/overlord-idp-users.properties"/>
+                            <module-option name="rolesProperties" value="${jboss.server.config.dir}/overlord-idp-roles.properties"/>
+                        </login-module>
+                    </authentication>
+                </security-domain>
             </security-domains>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:threads:1.1"/>
