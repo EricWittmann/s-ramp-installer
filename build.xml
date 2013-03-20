@@ -5,18 +5,16 @@
 
   <property name="s-ramp.version" value="0.1.1" />
   <property name="s-ramp-ui.version" value="0.1.1" />
-  <property name="overlord-commons-idp.version" value="1.0.0" />
+  <property name="overlord-commons.version" value="1.0.1" />
   <property name="resteasy.version" value="2.3.5.Final" />
   <property name="modeshape.version" value="3.1.3.Final" />
 
   <property name="jboss.download.url" value="http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip" />
   <property name="resteasy.download.url" value="http://sourceforge.net/projects/resteasy/files/Resteasy%20JAX-RS/${resteasy.version}/resteasy-jaxrs-${resteasy.version}-all.zip/download" />
   <property name="modeshape.download.url" value="http://downloads.jboss.org/modeshape/${modeshape.version}/modeshape-${modeshape.version}-jbossas-71-dist.zip" />
-  <property name="picketlink.download.url" value="https://repository.jboss.org/nexus/content/groups/public/org/picketlink/picketlink-installer/2.1.6.Final/picketlink-installer-2.1.6.Final.zip" />
-
+  <property name="overlord-commons-installer.download.url" value="https://repository.jboss.org/nexus/content/groups/public/org/overlord/overlord-commons-installer/${overlord-commons.version}/overlord-commons-installer-${overlord-commons.version}.jar" />
   <property name="s-ramp.download.url" value="https://repository.jboss.org/nexus/content/groups/public/org/overlord/sramp/s-ramp-server/${s-ramp.version}/s-ramp-server-${s-ramp.version}.war" />
   <property name="s-ramp-ui.download.url" value="https://repository.jboss.org/nexus/content/groups/public/org/overlord/sramp/s-ramp-ui-gwt/${s-ramp-ui.version}/s-ramp-ui-gwt-${s-ramp-ui.version}.war" />
-  <property name="overlord-commons-idp.download.url" value="https://repository.jboss.org/nexus/content/groups/public/org/overlord/overlord-commons-idp/${overlord-commons-idp.version}/overlord-commons-idp-${overlord-commons-idp.version}.war" />
 
   <property name="installdir" value="${basedir}/target" />
   <property name="jboss.as.dist.dir" value="${installdir}/jboss-as-7.1.1.Final" />
@@ -34,11 +32,6 @@
     <echo>-----------------------------</echo>
     <get src="${jboss.download.url}" dest="${installdir}/jboss-as-7.1.1.Final.zip" usetimestamp="true" />
 
-    <echo>----------------------------------</echo>
-    <echo>Downloading PicketLink 2.1.6.Final</echo>
-    <echo>----------------------------------</echo>
-    <get src="${picketlink.download.url}" dest="${installdir}/picketlink-installer-2.1.6.Final.zip" usetimestamp="true" />
-
     <echo>----------------------------------------</echo>
     <echo>Downloading s-ramp-server-${s-ramp.version}.war</echo>
     <echo>----------------------------------------</echo>
@@ -50,9 +43,9 @@
     <get src="${s-ramp-ui.download.url}" dest="${installdir}/s-ramp-ui-war-jboss7-${s-ramp-ui.version}.war" usetimestamp="true" />
 
     <echo>-------------------------------------------------------</echo>
-    <echo>Downloading overlord-commons-idp-${overlord-commons-idp.version}.war</echo>
+    <echo>Downloading overlord-commons-installer-${overlord-commons.version}.war</echo>
     <echo>-------------------------------------------------------</echo>
-    <get src="${overlord-commons-idp.download.url}" dest="${installdir}/overlord-commons-idp-${overlord-commons-idp.version}.war" usetimestamp="true" />
+    <get src="${overlord-commons-installer.download.url}" dest="${installdir}/overlord-commons-installer-${overlord-commons.version}.jar" usetimestamp="true" />
 
     <echo>---------------------------------</echo>
     <echo>Downloading RESTEasy ${resteasy.version}</echo>
@@ -70,24 +63,13 @@
     <delete dir="${installdir}/jboss-as-7.1.1.Final" />
     <unzip src="${installdir}/jboss-as-7.1.1.Final.zip" dest="${installdir}" overwrite="true" />
 
-    <echo>--------------------------------</echo>
-    <echo>Unzipping PicketLink 2.1.6.Final</echo>
-    <echo>--------------------------------</echo>
-    <unzip src="${installdir}/picketlink-installer-2.1.6.Final.zip" dest="${installdir}" overwrite="false" />
-
-    <echo>-----------------------------------------------------</echo>
-    <echo>Installing PicketLink Modules in JBoss AS 7.1.1.Final</echo>
-    <echo>-----------------------------------------------------</echo>
-    <property file="${installdir}/picketlink-installer-2.1.6.Final/installer.properties" />
-    <ant antfile="${installdir}/picketlink-installer-2.1.6.Final/build.xml" 
-         dir="${installdir}/picketlink-installer-2.1.6.Final" 
-         target="backup-as7-files" />
-    <ant antfile="${installdir}/picketlink-installer-2.1.6.Final/build.xml" 
-         dir="${installdir}/picketlink-installer-2.1.6.Final" 
-         target="install-picketlink" />
-    <ant antfile="${installdir}/picketlink-installer-2.1.6.Final/build.xml" 
-         dir="${installdir}/picketlink-installer-2.1.6.Final" 
-         target="install-picketlink-subsystem" />
+    <echo>------------------------------------</echo>
+    <echo>Unzipping Overlord Commons Installer</echo>
+    <echo>------------------------------------</echo>
+    <unzip src="${installdir}/overlord-commons-installer-${overlord-commons.version}.jar" dest="${installdir}/overlord-commons-installer-${overlord-commons.version}" overwrite="false" />
+    <ant antfile="build.xml" 
+         dir="${installdir}/overlord-commons-installer-${overlord-commons.version}" 
+         target="install-all" />
 
     <echo>--------------------</echo>
     <echo>Unzipping RESTEasy</echo>
@@ -100,6 +82,16 @@
     <unzip src="${installdir}/resteasy-jaxrs-2.3.5.Final/resteasy-jboss-modules-2.3.5.Final.zip" dest="${jboss.as.dist.dir}/modules" overwrite="false" />
     <copy file="updates/resteasy-jaxrs-module.xml" tofile="${jboss.as.dist.dir}/modules/org/jboss/resteasy/resteasy-jaxrs/main/module.xml" />
 
+    <echo>--------------------</echo>
+    <echo>Configuring RESTEasy</echo>
+    <echo>--------------------</echo>
+    <xslt 
+      style="updates/xslt/configureRESTEasy.xslt"
+      in="${jboss.as.dist.dir}/standalone/configuration/standalone.xml"
+      out="${installdir}/_tmp_standalone-re.xml" />
+    <copy file="${installdir}/_tmp_standalone-re.xml" tofile="${jboss.as.dist.dir}/standalone/configuration/standalone.xml" overwrite="true" />
+    <delete file="${installdir}/_tmp_standalone-re.xml" />
+
     <echo>------------------------------</echo>
     <echo>Installing Modeshape Service</echo>
     <echo>------------------------------</echo>
@@ -107,22 +99,26 @@
     <delete includeEmptyDirs="true">
       <fileset dir="${jboss.as.dist.dir}/standalone/deployments" includes="modeshape*/**" />
     </delete>
-    <copy file="${jboss.as.dist.dir}/standalone/configuration/standalone.xml" tofile="${jboss.as.dist.dir}/standalone/configuration/standalone-sramp-backup.xml" overwrite="true" />
-    <copy file="updates/standalone.xml" tofile="${jboss.as.dist.dir}/standalone/configuration/standalone.xml" overwrite="true" />
-    <copy file="${jboss.as.dist.dir}/bin/standalone.conf" tofile="${jboss.as.dist.dir}/bin/standalone-sramp-backup.conf" overwrite="true" />
-    <copy file="updates/standalone.conf" tofile="${jboss.as.dist.dir}/bin/standalone.conf" overwrite="true" />
 
-    <echo>--------------------------</echo>
-    <echo>Deploying the Overlord IDP</echo>
-    <echo>--------------------------</echo>
-    <copy file="${installdir}/overlord-commons-idp-${overlord-commons-idp.version}.war" tofile="${jboss.as.dist.dir}/standalone/deployments/overlord-idp.war" overwrite="true" />
-    <unzip src="${installdir}/overlord-commons-idp-${overlord-commons-idp.version}.war" dest="${installdir}/overlord-commons-idp-resources">
-      <patternset>
-        <include name="**/*.properties" />
-      </patternset>
-    </unzip>
-    <copy file="${installdir}/overlord-commons-idp-resources/WEB-INF/classes/overlord-idp-users.properties" tofile="${jboss.as.dist.dir}/standalone/configuration/overlord-idp-users.properties" overwrite="true" />
-    <copy file="${installdir}/overlord-commons-idp-resources/WEB-INF/classes/overlord-idp-roles.properties" tofile="${jboss.as.dist.dir}/standalone/configuration/overlord-idp-roles.properties" overwrite="true" />
+    <echo>-----------------------------</echo>
+    <echo>Configuring Modeshape Service</echo>
+    <echo>-----------------------------</echo>
+    <xslt 
+      style="updates/xslt/configureModeshape.xslt"
+      in="${jboss.as.dist.dir}/standalone/configuration/standalone.xml"
+      out="${installdir}/_tmp_standalone-ms.xml" />
+    <copy file="${installdir}/_tmp_standalone-ms.xml" tofile="${jboss.as.dist.dir}/standalone/configuration/standalone.xml" overwrite="true" />
+    <delete file="${installdir}/_tmp_standalone-ms.xml" />
+
+    <echo>--------------------</echo>
+    <echo>Configuring jBPM (testing)</echo>
+    <echo>--------------------</echo>
+    <xslt 
+      style="updates/xslt/configureJbpm.xslt"
+      in="${jboss.as.dist.dir}/standalone/configuration/standalone.xml"
+      out="${installdir}/_tmp_standalone-jbpm.xml" />
+    <copy file="${installdir}/_tmp_standalone-jbpm.xml" tofile="${jboss.as.dist.dir}/standalone/configuration/standalone.xml" overwrite="true" />
+    <delete file="${installdir}/_tmp_standalone-jbpm.xml" />
 
     <echo>------------------------------</echo>
     <echo>Deploying S-RAMP and S-RAMP UI</echo>
