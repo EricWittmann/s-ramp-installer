@@ -26,6 +26,7 @@
     <echo message="# install S-RAMP and the S-RAMP UI into     #" />
     <echo message="# JBoss 7.1.1.Final.                        #" />
     <echo message="#############################################" />
+    <mkdir dir="${installdir}"/>
 
     <echo>-----------------------------</echo>
     <echo>Downloading JBoss 7.1.1.Final</echo>
@@ -110,6 +111,7 @@
     <copy file="${installdir}/_tmp_standalone-ms.xml" tofile="${jboss.as.dist.dir}/standalone/configuration/standalone.xml" overwrite="true" />
     <delete file="${installdir}/_tmp_standalone-ms.xml" />
 
+    <!--
     <echo>--------------------</echo>
     <echo>Configuring jBPM (testing)</echo>
     <echo>--------------------</echo>
@@ -119,6 +121,7 @@
       out="${installdir}/_tmp_standalone-jbpm.xml" />
     <copy file="${installdir}/_tmp_standalone-jbpm.xml" tofile="${jboss.as.dist.dir}/standalone/configuration/standalone.xml" overwrite="true" />
     <delete file="${installdir}/_tmp_standalone-jbpm.xml" />
+    -->
 
     <echo>------------------------------</echo>
     <echo>Deploying S-RAMP and S-RAMP UI</echo>
