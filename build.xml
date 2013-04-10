@@ -111,10 +111,10 @@
     <copy file="${installdir}/_tmp_standalone-ms.xml" tofile="${jboss.as.dist.dir}/standalone/configuration/standalone.xml" overwrite="true" />
     <delete file="${installdir}/_tmp_standalone-ms.xml" />
 
-    <!--
     <echo>--------------------</echo>
     <echo>Configuring jBPM (testing)</echo>
     <echo>--------------------</echo>
+    <!--
     <xslt 
       style="updates/xslt/configureJbpm.xslt"
       in="${jboss.as.dist.dir}/standalone/configuration/standalone.xml"
