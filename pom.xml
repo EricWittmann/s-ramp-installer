@@ -8,6 +8,13 @@
   <packaging>pom</packaging>
 
   <properties>
+    <!-- The versions of stuff we're installing -->
+    <s-ramp.version>0.1.2-SNAPSHOT</s-ramp.version>
+    <s-ramp-ui.version>0.1.2-SNAPSHOT</s-ramp-ui.version>
+    <overlord-commons.version>1.0.1</overlord-commons.version>
+    <resteasy.version>2.3.5.Final</resteasy.version>
+    <modeshape.version>3.2.0.Final</modeshape.version>
+  
     <!-- Instruct the build to use only UTF-8 encoding for source code -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
@@ -27,6 +34,26 @@
     <maven.deploy.plugin.version>2.5</maven.deploy.plugin.version>
     <maven.antrun.plugin.version>1.7</maven.antrun.plugin.version>
   </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.overlord.sramp</groupId>
+      <artifactId>s-ramp-server</artifactId>
+      <version>${s-ramp.version}</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>org.overlord.sramp</groupId>
+      <artifactId>s-ramp-ui-war-jboss7</artifactId>
+      <version>${s-ramp-ui.version}</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>org.overlord</groupId>
+      <artifactId>overlord-commons-installer</artifactId>
+      <version>${overlord-commons.version}</version>
+    </dependency>
+  </dependencies>
 
   <build>
     <!-- This section defines the default plugin settings inherited by child 
@@ -69,6 +96,52 @@
           <showDeprecation>false</showDeprecation>
           <showWarnings>false</showWarnings>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.7</version>
+        <executions>
+          <execution>
+            <id>copy</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.overlord.sramp</groupId>
+                  <artifactId>s-ramp-server</artifactId>
+                  <version>${s-ramp.version}</version>
+                  <type>war</type>
+                  <overWrite>true</overWrite>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                  <destFileName>s-ramp-server-${s-ramp.version}.war</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.overlord.sramp</groupId>
+                  <artifactId>s-ramp-ui-war-jboss7</artifactId>
+                  <version>${s-ramp-ui.version}</version>
+                  <type>war</type>
+                  <overWrite>true</overWrite>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                  <destFileName>s-ramp-ui-${s-ramp-ui.version}.war</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.overlord</groupId>
+                  <artifactId>overlord-commons-installer</artifactId>
+                  <version>${overlord-commons.version}</version>
+                  <type>jar</type>
+                  <overWrite>true</overWrite>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                  <destFileName>overlord-commons-installer-${overlord-commons.version}.jar</destFileName>
+                </artifactItem>
+              </artifactItems>
+              <!-- other configurations here -->
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
@@ -122,7 +195,7 @@
       </releases>
       <snapshots>
         <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
+        <updatePolicy>always</updatePolicy>
       </snapshots>
     </repository>
   </repositories>
@@ -136,7 +209,7 @@
         <enabled>true</enabled>
       </releases>
       <snapshots>
-        <enabled>true</enabled>
+        <enabled>always</enabled>
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
