@@ -11,7 +11,7 @@
     <!-- The versions of stuff we're installing -->
     <s-ramp.version>0.1.2-SNAPSHOT</s-ramp.version>
     <s-ramp-ui.version>0.1.2-SNAPSHOT</s-ramp-ui.version>
-    <overlord-commons.version>1.0.1</overlord-commons.version>
+    <overlord-commons.version>1.0.3</overlord-commons.version>
     <resteasy.version>2.3.5.Final</resteasy.version>
     <modeshape.version>3.2.0.Final</modeshape.version>
   
@@ -146,24 +146,6 @@
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
         <version>${maven.antrun.plugin.version}</version>
-<!--         <dependencies> -->
-<!--           <dependency> -->
-<!--             <groupId>ant-contrib</groupId> -->
-<!--             <artifactId>ant-contrib</artifactId> -->
-<!--             <version>1.0b3</version> -->
-<!--             <exclusions> -->
-<!--               <exclusion> -->
-<!--                 <groupId>ant</groupId> -->
-<!--                 <artifactId>ant</artifactId> -->
-<!--               </exclusion> -->
-<!--             </exclusions> -->
-<!--           </dependency> -->
-<!--           <dependency> -->
-<!--             <groupId>ant</groupId> -->
-<!--             <artifactId>ant-nodeps</artifactId> -->
-<!--             <version>1.6.5</version> -->
-<!--           </dependency> -->
-<!--         </dependencies> -->
         <executions>
           <execution>
             <phase>install</phase>
@@ -191,7 +173,7 @@
       <layout>default</layout>
       <releases>
         <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
+        <updatePolicy>always</updatePolicy>
       </releases>
       <snapshots>
         <enabled>true</enabled>

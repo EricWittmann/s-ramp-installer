@@ -90,6 +90,7 @@
       out="${installdir}/_tmp_standalone-ms.xml" />
     <copy file="${installdir}/_tmp_standalone-ms.xml" tofile="${jboss.as.dist.dir}/standalone/configuration/standalone.xml" overwrite="true" />
     <delete file="${installdir}/_tmp_standalone-ms.xml" />
+    <copy file="updates/modeshape-module.xml" tofile="${jboss.as.dist.dir}/modules/org/modeshape/main/module.xml" />
 
     <echo>------------------------------</echo>
     <echo>Deploying S-RAMP and S-RAMP UI</echo>
@@ -98,6 +99,13 @@
           tofile="${jboss.as.dist.dir}/standalone/deployments/s-ramp-server.war" overwrite="true" />
     <copy file="${project.build.directory}/s-ramp-ui-${s-ramp-ui.version}.war" 
           tofile="${jboss.as.dist.dir}/standalone/deployments/s-ramp-ui.war" overwrite="true" />
+
+    <echo>-------------------------</echo>
+    <echo>Configuring Overlord Apps</echo>
+    <echo>-------------------------</echo>
+    <property name="overlord-apps.dir" value="${jboss.as.dist.dir}/standalone/configuration/overlord-apps" />
+  	<mkdir dir="${overlord-apps.dir}" />
+  	<copy file="updates/srampui-overlord-app.properties" todir="${overlord-apps.dir}" overwrite="true" />
 
     <echo message=" " />
     <echo message="########" />
