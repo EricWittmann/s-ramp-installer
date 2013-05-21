@@ -11,7 +11,7 @@
     <!-- The versions of stuff we're installing -->
     <s-ramp.version>0.1.2-SNAPSHOT</s-ramp.version>
     <s-ramp-ui.version>0.1.2-SNAPSHOT</s-ramp-ui.version>
-    <overlord-commons.version>1.0.3</overlord-commons.version>
+    <overlord-commons.version>1.0.6</overlord-commons.version>
     <resteasy.version>2.3.5.Final</resteasy.version>
     <modeshape.version>3.2.0.Final</modeshape.version>
   
