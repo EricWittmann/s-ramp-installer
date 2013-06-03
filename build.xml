@@ -105,8 +105,8 @@
     <echo>-------------------------</echo>
     <property name="overlord-apps.dir" value="${jboss.as.dist.dir}/standalone/configuration/overlord-apps" />
   	<mkdir dir="${overlord-apps.dir}" />
-    <copy file="updates/srampui-overlordapp.properties" todir="${jboss.as.dist.dir}/standalone/configuration/" overwrite="true" />
-    <copy file="updates/sramp.properties" todir="${overlord-apps.dir}" overwrite="true" />
+    <copy file="updates/sramp.properties" todir="${jboss.as.dist.dir}/standalone/configuration/" overwrite="true" />
+    <copy file="updates/srampui-overlordapp.properties" todir="${overlord-apps.dir}" overwrite="true" />
   	
   	<!-- Enable remote debugging -->
   	<copy file="updates/standalone.conf" todir="${jboss.as.dist.dir}/bin" overwrite="true" />
