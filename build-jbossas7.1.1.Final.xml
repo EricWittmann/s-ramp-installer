@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Install S-RAMP and S-RAMP-UI on JBoss AS 7.1.1.Final" default="install">
+
+  <property file="build.properties" />
+
+  <property name="resteasy.version" value="2.3.5.Final" />
+  <property name="modeshape.version" value="3.1.3.Final" />
+
+  <property name="jboss.download.url" value="http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip" />
+  <property name="resteasy.download.url" value="http://sourceforge.net/projects/resteasy/files/Resteasy%20JAX-RS/${resteasy.version}/resteasy-jaxrs-${resteasy.version}-all.zip/download" />
+  <property name="modeshape.download.url" value="http://downloads.jboss.org/modeshape/3.1.3.Final/modeshape-3.1.3.Final-jbossas-71-dist.zip" />
+
+  <property name="installdir" value="${basedir}/target" />
+  <property name="jboss.as.dist.dir" value="${installdir}/jboss-as-7.1.1.Final" />
+
+  <target name="install">
+    <echo message=" " />
+    <echo message="#############################################" />
+    <echo message="# Running the S-RAMP installer.  This will  #" />
+    <echo message="# install S-RAMP and the S-RAMP UI into     #" />
+    <echo message="# JBoss 7.1.1.Final.                        #" />
+    <echo message="#############################################" />
+    <mkdir dir="${installdir}"/>
+
+    <echo>-----------------------------</echo>
+    <echo>Downloading JBoss 7.1.1.Final</echo>
+    <echo>-----------------------------</echo>
+    <get src="${jboss.download.url}" dest="${installdir}/jboss-as-7.1.1.Final.zip" usetimestamp="true" />
+
+    <echo>---------------------------------</echo>
+    <echo>Downloading RESTEasy ${resteasy.version}</echo>
+    <echo>---------------------------------</echo>
+    <get src="${resteasy.download.url}" dest="${installdir}/resteasy-jaxrs-${resteasy.version}-all.zip" usetimestamp="true" />
+
+    <echo>-----------------------------------</echo>
+    <echo>Downloading ModeShape</echo>
+    <echo>-----------------------------------</echo>
+    <get src="${modeshape.download.url}" dest="${installdir}/modeshape-${modeshape.version}-jbossas-71-dist.zip" usetimestamp="true" />
+
+    <echo>---------------------------</echo>
+    <echo>Unzipping JBoss 7.1.1.Final</echo>
+    <echo>---------------------------</echo>
+    <delete dir="${installdir}/jboss-as-7.1.1.Final" />
+    <unzip src="${installdir}/jboss-as-7.1.1.Final.zip" dest="${installdir}" overwrite="true" />
+
+    <echo>------------------------------------</echo>
+    <echo>Unzipping Overlord Commons Installer</echo>
+    <echo>------------------------------------</echo>
+    <unzip src="${project.build.directory}/overlord-commons-installer-${overlord-commons.version}.jar" 
+           dest="${installdir}/overlord-commons-installer-${overlord-commons.version}" overwrite="false" />
+    <ant antfile="build.xml" 
+         dir="${installdir}/overlord-commons-installer-${overlord-commons.version}" 
+         target="install-all" />
+
+    <echo>--------------------</echo>
+    <echo>Unzipping RESTEasy</echo>
+    <echo>--------------------</echo>
+    <unzip src="${installdir}/resteasy-jaxrs-2.3.5.Final-all.zip" dest="${installdir}" overwrite="false" />
+
+    <echo>------------------------------</echo>
+    <echo>Upgrading RESTEasy in JBossAS</echo>
+    <echo>------------------------------</echo>
+    <unzip src="${installdir}/resteasy-jaxrs-2.3.5.Final/resteasy-jboss-modules-2.3.5.Final.zip" dest="${jboss.as.dist.dir}/modules" overwrite="false" />
+    <copy file="updates/resteasy-jaxrs-module.xml" tofile="${jboss.as.dist.dir}/modules/org/jboss/resteasy/resteasy-jaxrs/main/module.xml" />
+
+    <echo>--------------------</echo>
+    <echo>Configuring RESTEasy</echo>
+    <echo>--------------------</echo>
+    <xslt 
+      style="updates/xslt/configureRESTEasy.xslt"
+      in="${jboss.as.dist.dir}/standalone/configuration/standalone.xml"
+      out="${installdir}/_tmp_standalone-re.xml" />
+    <copy file="${installdir}/_tmp_standalone-re.xml" tofile="${jboss.as.dist.dir}/standalone/configuration/standalone.xml" overwrite="true" />
+    <delete file="${installdir}/_tmp_standalone-re.xml" />
+
+    <echo>------------------------------</echo>
+    <echo>Installing Modeshape Service</echo>
+    <echo>------------------------------</echo>
+    <unzip src="${installdir}/modeshape-${modeshape.version}-jbossas-71-dist.zip" dest="${jboss.as.dist.dir}" overwrite="false" />
+    <delete includeEmptyDirs="true">
+      <fileset dir="${jboss.as.dist.dir}/standalone/deployments" includes="modeshape*/**" />
+    </delete>
+
+    <echo>-----------------------------</echo>
+    <echo>Configuring Modeshape Service</echo>
+    <echo>-----------------------------</echo>
+    <xslt 
+      style="updates/xslt/configureModeshape-jbossas7.1.1.Final.xslt"
+      in="${jboss.as.dist.dir}/standalone/configuration/standalone.xml"
+      out="${installdir}/_tmp_standalone-ms.xml" />
+    <copy file="${installdir}/_tmp_standalone-ms.xml" tofile="${jboss.as.dist.dir}/standalone/configuration/standalone.xml" overwrite="true" />
+    <delete file="${installdir}/_tmp_standalone-ms.xml" />
+    <copy file="updates/modeshape-module-jbossas7.1.1.Final.xml" tofile="${jboss.as.dist.dir}/modules/org/modeshape/main/module.xml" />
+
+    <echo>------------------------------</echo>
+    <echo>Deploying S-RAMP and S-RAMP UI</echo>
+    <echo>------------------------------</echo>
+    <copy file="${project.build.directory}/s-ramp-server-${s-ramp.version}.war" 
+          tofile="${jboss.as.dist.dir}/standalone/deployments/s-ramp-server.war" overwrite="true" />
+    <copy file="${project.build.directory}/s-ramp-ui-${s-ramp-ui.version}.war" 
+          tofile="${jboss.as.dist.dir}/standalone/deployments/s-ramp-ui.war" overwrite="true" />
+
+    <echo>-------------------------</echo>
+    <echo>Configuring Overlord Apps</echo>
+    <echo>-------------------------</echo>
+    <property name="overlord-apps.dir" value="${jboss.as.dist.dir}/standalone/configuration/overlord-apps" />
+  	<mkdir dir="${overlord-apps.dir}" />
+    <copy file="updates/sramp.properties" todir="${jboss.as.dist.dir}/standalone/configuration/" overwrite="true" />
+    <copy file="updates/srampui-overlordapp.properties" todir="${overlord-apps.dir}" overwrite="true" />
+  	
+  	<!-- Enable remote debugging -->
+  	<copy file="updates/standalone-jbossas7.1.1.Final.conf" tofile="${jboss.as.dist.dir}/bin/standalone.conf" overwrite="true" />
+
+    <echo message=" " />
+    <echo message="########" />
+    <echo message="# DONE #" />
+    <echo message="########" />
+    <echo message=" " />
+  </target>
+
+</project>

@@ -11,7 +11,6 @@
     <!-- The versions of stuff we're installing -->
     <s-ramp.version>0.1.2-SNAPSHOT</s-ramp.version>
     <s-ramp-ui.version>0.1.2-SNAPSHOT</s-ramp-ui.version>
-    <overlord-commons.version>1.0.6</overlord-commons.version>
     <resteasy.version>2.3.5.Final</resteasy.version>
     <modeshape.version>3.2.0.Final</modeshape.version>
   
@@ -47,11 +46,6 @@
       <artifactId>s-ramp-ui-war-jboss7</artifactId>
       <version>${s-ramp-ui.version}</version>
       <type>war</type>
-    </dependency>
-    <dependency>
-      <groupId>org.overlord</groupId>
-      <artifactId>overlord-commons-installer</artifactId>
-      <version>${overlord-commons.version}</version>
     </dependency>
   </dependencies>
 
@@ -127,15 +121,6 @@
                   <overWrite>true</overWrite>
                   <outputDirectory>${project.build.directory}</outputDirectory>
                   <destFileName>s-ramp-ui-${s-ramp-ui.version}.war</destFileName>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.overlord</groupId>
-                  <artifactId>overlord-commons-installer</artifactId>
-                  <version>${overlord-commons.version}</version>
-                  <type>jar</type>
-                  <overWrite>true</overWrite>
-                  <outputDirectory>${project.build.directory}</outputDirectory>
-                  <destFileName>overlord-commons-installer-${overlord-commons.version}.jar</destFileName>
                 </artifactItem>
               </artifactItems>
               <!-- other configurations here -->
