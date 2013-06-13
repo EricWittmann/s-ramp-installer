@@ -48,7 +48,7 @@
     <echo>------------------------------------</echo>
     <unzip src="${project.build.directory}/overlord-commons-installer-${overlord-commons.version}.jar" 
            dest="${installdir}/overlord-commons-installer-${overlord-commons.version}" overwrite="false" />
-    <ant antfile="build.xml" 
+    <ant antfile="build-jbossas7.xml" 
          dir="${installdir}/overlord-commons-installer-${overlord-commons.version}" 
          target="install-all" />
 

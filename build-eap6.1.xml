@@ -6,8 +6,8 @@
   <property name="overlord-commons-installer.version" value="1.0.7" />
   <property name="modeshape.version" value="3.1.3.Final" />
 
-  <property name="eap.download.url" value="file:///C:/Tools/jboss-eap-6.1.0.zip" />
-  <property name="modeshape.download.url" value="file:///C:/Tools/modeshape-3.2.0.Final-jbosseap-61-dist.zip" />
+  <property name="eap.download.url" value="" />
+  <property name="modeshape.download.url" value="" />
   <property 
   	  name="overlord-commons-installer.download.url" 
   	  value="https://repository.jboss.org/nexus/content/groups/developer/org/overlord/overlord-commons-installer/${overlord-commons-installer.version}/overlord-commons-installer-${overlord-commons-installer.version}.jar" />
