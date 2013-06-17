@@ -88,13 +88,27 @@
     <copy file="${project.build.directory}/s-ramp-ui-${s-ramp-ui.version}.war" 
           tofile="${eap.as.dist.dir}/standalone/deployments/s-ramp-ui.war" overwrite="true" />
 
+    <echo>----------------------------</echo>
+    <echo>Deploying Dtgov and Dtgov UI</echo>
+    <echo>----------------------------</echo>
+<!--
+    <copy file="${project.build.directory}/dtgov-${dtgov.version}.war" 
+          tofile="${eap.as.dist.dir}/standalone/deployments/dtgov.war" overwrite="true" />
+-->
+    <copy file="${project.build.directory}/dtgov-ui-${dtgov.version}.war" 
+          tofile="${eap.as.dist.dir}/standalone/deployments/dtgov-ui.war" overwrite="true" />
+    <copy file="updates/dtgov-ds.xml" todir="${eap.as.dist.dir}/standalone/deployments/" overwrite="true" />
+
     <echo>-------------------------</echo>
     <echo>Configuring Overlord Apps</echo>
     <echo>-------------------------</echo>
     <property name="overlord-apps.dir" value="${eap.as.dist.dir}/standalone/configuration/overlord-apps" />
   	<mkdir dir="${overlord-apps.dir}" />
     <copy file="updates/sramp.properties" todir="${eap.as.dist.dir}/standalone/configuration/" overwrite="true" />
+    <copy file="updates/sramp-ui.properties" todir="${eap.as.dist.dir}/standalone/configuration/" overwrite="true" />
+    <copy file="updates/dtgov-ui.properties" todir="${eap.as.dist.dir}/standalone/configuration/" overwrite="true" />
     <copy file="updates/srampui-overlordapp.properties" todir="${overlord-apps.dir}" overwrite="true" />
+    <copy file="updates/dtgovui-overlordapp.properties" todir="${overlord-apps.dir}" overwrite="true" />
   	
   	<!-- Enable remote debugging -->
     <copy file="updates/standalone-eap6.1.conf" tofile="${eap.as.dist.dir}/bin/standalone.conf" overwrite="true" />
