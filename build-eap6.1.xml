@@ -3,14 +3,10 @@
 
   <property file="build.properties" />
 
-  <property name="overlord-commons-installer.version" value="1.0.7" />
   <property name="modeshape.version" value="3.1.3.Final" />
 
   <property name="eap.download.url" value="" />
   <property name="modeshape.download.url" value="" />
-  <property 
-  	  name="overlord-commons-installer.download.url" 
-  	  value="https://repository.jboss.org/nexus/content/groups/developer/org/overlord/overlord-commons-installer/${overlord-commons-installer.version}/overlord-commons-installer-${overlord-commons-installer.version}.jar" />
 
   <property name="installdir" value="${basedir}/target" />
   <property name="eap.as.dist.dir" value="${installdir}/jboss-eap-6.1" />
@@ -34,12 +30,6 @@
     <echo>-----------------------------------</echo>
     <get src="${modeshape.download.url}" dest="${installdir}/modeshape-${modeshape.version}.zip" usetimestamp="true" />
 
-    <echo>--------------------------------------</echo>
-    <echo>Downloading Overlord Commons Installer</echo>
-    <echo>--------------------------------------</echo>
-    <get src="${overlord-commons-installer.download.url}" 
-    	dest="${installdir}/overlord-commons-installer-${overlord-commons-installer.version}.jar" usetimestamp="true" />
-
     <echo>-----------------</echo>
     <echo>Unzipping EAP 6.1</echo>
     <echo>-----------------</echo>
@@ -47,13 +37,13 @@
     <unzip src="${installdir}/jboss-eap-6.1.0.zip" dest="${installdir}" overwrite="true" />
     <copy file="updates/layers.conf" todir="${eap.as.dist.dir}/modules"/>
 
-    <echo>------------------------------------</echo>
-    <echo>Unzipping Overlord Commons Installer</echo>
-    <echo>------------------------------------</echo>
-    <unzip src="${installdir}/overlord-commons-installer-${overlord-commons-installer.version}.jar" 
-           dest="${installdir}/overlord-commons-installer-${overlord-commons-installer.version}" overwrite="false" />
+    <echo>----------------------------------------</echo>
+    <echo>Delegating to Overlord Commons Installer</echo>
+    <echo>----------------------------------------</echo>
+    <unzip src="${project.build.directory}/overlord-commons-installer-${overlord-commons.version}.jar" 
+           dest="${installdir}/overlord-commons-installer-${overlord-commons.version}" overwrite="false" />
     <ant antfile="build.xml" 
-         dir="${installdir}/overlord-commons-installer-${overlord-commons-installer.version}" 
+         dir="${installdir}/overlord-commons-installer-${overlord-commons.version}" 
          target="install-all" />
 
     <echo>----------------------------</echo>
