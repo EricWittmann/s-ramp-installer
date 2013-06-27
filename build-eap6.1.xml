@@ -42,6 +42,8 @@
     <echo>----------------------------------------</echo>
     <unzip src="${project.build.directory}/overlord-commons-installer-${overlord-commons.version}.jar" 
            dest="${installdir}/overlord-commons-installer-${overlord-commons.version}" overwrite="false" />
+    <property name="overlord-commons.install.dir" value="${installdir}" />
+    <property name="overlord-commons.appserver.dir" value="${eap.as.dist.dir}" />
     <ant antfile="build.xml" 
          dir="${installdir}/overlord-commons-installer-${overlord-commons.version}" 
          target="install-all" />
